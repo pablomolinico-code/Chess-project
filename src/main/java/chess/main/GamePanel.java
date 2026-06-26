@@ -18,6 +18,7 @@ public class GamePanel extends JPanel implements Runnable{
     public static ArrayList<Piece> pieces = new ArrayList<>();
     public static ArrayList<Piece> simPieces = new ArrayList<>();
     Piece activeP;
+    public static Piece castlingP;
 
     // COLOR
     public static final int WHITE = 0;
@@ -66,6 +67,10 @@ public class GamePanel extends JPanel implements Runnable{
                     copyPieces(simPieces,pieces);
                     activeP.updatePoisition();
 
+                    if (castlingP != null) {
+                        castlingP.updatePoisition();
+                    }
+
                     changePlayer();
                 }else  {
                     copyPieces(pieces,simPieces);
@@ -87,6 +92,12 @@ public class GamePanel extends JPanel implements Runnable{
 
         copyPieces(pieces,simPieces);
 
+        if (castlingP != null) {
+            castlingP.col = castlingP.preCol;
+            castlingP.X = castlingP.getX(castlingP.col);
+            castlingP = null;
+        }
+
         activeP.X  = mouse.x - Board.HALF_SQUARE_SIZE;
         activeP.Y = mouse.y - Board.HALF_SQUARE_SIZE;
 
@@ -102,7 +113,20 @@ public class GamePanel extends JPanel implements Runnable{
             if (activeP.hittingP != null) {
                 simPieces.remove(activeP.hittingP.getIndex());
             }
+            checkCastling();
             validSquare = true;
+        }
+    }
+
+    private void checkCastling() {
+
+        if (castlingP != null) {
+            if (castlingP.col == 0) {
+                castlingP.col += 3;
+            } else if (castlingP.col == 7) {
+                castlingP.col -= 2;
+            }
+            castlingP.X = castlingP.getX(castlingP.col);
         }
     }
 
@@ -140,6 +164,16 @@ public class GamePanel extends JPanel implements Runnable{
 
 
             activeP.draw(g2);
+        }
+
+        // STATUS MESSAGES
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g2.setFont(new Font("Book Antiqua", Font.PLAIN, 40));
+        g2.setColor(Color.white);
+        if (currentColor == WHITE) {
+            g2.drawString("White´s turn", 840,550);
+        } else {
+            g2.drawString("Black´s turn", 840, 250);
         }
     }
 
@@ -191,7 +225,7 @@ public class GamePanel extends JPanel implements Runnable{
         pieces.add(new Rook(WHITE,0,7));
         pieces.add(new Bishop(WHITE,2,7));
         pieces.add(new Bishop(WHITE,5,7));
-        pieces.add(new Queen(WHITE,4,7));
+        pieces.add(new Queen(WHITE,3,7));
         pieces.add(new King(WHITE,4,7));
 
         // Black team
