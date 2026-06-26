@@ -65,6 +65,8 @@ public class GamePanel extends JPanel implements Runnable{
                 if (validSquare) {
                     copyPieces(simPieces,pieces);
                     activeP.updatePoisition();
+
+                    changePlayer();
                 }else  {
                     copyPieces(pieces,simPieces);
                     activeP.resetPosition();
@@ -102,6 +104,15 @@ public class GamePanel extends JPanel implements Runnable{
             }
             validSquare = true;
         }
+    }
+
+    private void changePlayer() {
+        if (currentColor == WHITE) {
+            currentColor = BLACK;
+        } else {
+            currentColor = WHITE;
+        }
+        activeP = null;
     }
 
     public void  paintComponent(Graphics graphics) {
