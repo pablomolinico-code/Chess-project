@@ -2,20 +2,25 @@ package chess.piece;
 
 import chess.main.Board;
 import chess.main.GamePanel;
+import chess.main.Type;
 
 import javax.imageio.ImageIO;
+import javax.security.auth.Destroyable;
+import javax.swing.plaf.PanelUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.security.PublicKey;
 
 public class Piece {
 
+    public Type type;
     public BufferedImage image;
     public int X, Y;
     public int col, row, preCol, preRow;
     public int color;
     public Piece hittingP;
-    public boolean moved;
+    public boolean moved, twoStepped;
 
     public Piece(int color, int col, int row) {
         this.color = color;
@@ -57,6 +62,12 @@ public class Piece {
     }
 
     public void updatePoisition() {
+
+        if (type == Type.PAWN) {
+            if (Math.abs(row - preRow) == 2) {
+                twoStepped = true;
+            }
+        }
 
         X = getX(col);
         Y = getY(row);

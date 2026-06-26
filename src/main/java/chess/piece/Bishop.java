@@ -2,10 +2,13 @@ package chess.piece;
 
 import chess.main.GamePanel;
 import chess.main.Main;
+import chess.main.Type;
 
 public class Bishop extends Piece{
     public Bishop(int color, int col, int row) {
         super(color, col, row);
+
+        type = Type.BISHOP;
 
         if (color == GamePanel.WHITE) {
             image = getImage("/piece/w-bishop");
