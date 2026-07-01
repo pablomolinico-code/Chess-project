@@ -37,8 +37,8 @@ public class GamePanel extends JPanel implements Runnable{
         addMouseMotionListener(mouse);
         addMouseListener(mouse);
 
-        //setPieces();
-        testPromotion();
+        setPieces();
+
         copyPieces(pieces, simPieces);
     }
 
@@ -202,10 +202,7 @@ public class GamePanel extends JPanel implements Runnable{
         activeP = null;
     }
 
-    public void testPromotion() {
-        pieces.add(new Pawn(WHITE,0,4));
-        pieces.add(new Pawn(BLACK,3,3));
-    }
+
 
 
 
